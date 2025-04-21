@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id                    String    @id @default(uuid())
+  email                 String    @unique
+  name                  String?
+  password              String?
+  role                  String?                   // Permissões de acesso
+  isTemporaryPassword   Boolean? @default(false)  // Senha temporária
+  isVerified            Boolean? @default(false)  // Usuário verificado
+  isActive              Boolean? @default(true)   // Usuário ativo
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
